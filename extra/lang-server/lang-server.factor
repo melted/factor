@@ -1,11 +1,18 @@
 ! Copyright (C) 2019 Niklas Larsson.
 ! See http://factorcode.org/license.txt for BSD license.
 
-USING: assocs combinators io io.encodings.utf8 io.files json json.reader json.writer kernel
-       math.parser sequences splitting unicode ;
+USING: assocs combinators io io.encodings.utf8 io.files json json.reader
+       json.writer kernel math.parser namespaces sequences
+       splitting unicode ;
 IN: lang-server
 
 ERROR: invalid-message ;
+
+TUPLE: sstate caps ;
+
+SYMBOL: server
+
+: <sstate> ( -- obj ) sstate new ;
 
 : log? ( -- ? ) t ;
 
@@ -47,7 +54,7 @@ ERROR: invalid-message ;
 : handle-one ( -- ? ) read-message dup "method" swap at
     [ dispatch-method ] [ drop f ] if* ;
 
-: setup-server ( -- ) ;
+: setup-server ( -- ) <sstate> server set ;
 
 : serve ( -- ) setup-server [ handle-one ] loop  ;
 
