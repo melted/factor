@@ -19,6 +19,7 @@ SLOT: continuation
     disposables get adjoin ;
 
 : unregister-disposable ( obj -- )
+    current-continuation >>continuation
     dup disposables get ?delete [ drop ] [ already-unregistered ] if ;
 
 PRIVATE>
